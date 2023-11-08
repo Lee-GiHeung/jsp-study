@@ -8,9 +8,14 @@ import javax.servlet.ServletContext;
 
 import com.momo.common.DBConnection;
 import com.momo.dto.DeptDto;
-
+/**
+ * DAO - DB로 부터 데이터의 CRUD작업을 처리하는 객체
+ *  
+ */
 public class DeptDao extends DBConnection {
+	// 생성자를 통해서 Connection 객체를 생성 후 멤버변수 con에 저장
 	public DeptDao(ServletContext application) {
+		// application으로부터 DB접속 정보를 꺼내옴
 		super(application);
 	}
 	
