@@ -9,8 +9,6 @@
 <body>
 <h2>로그인</h2>
 <%
-	
-
 	String isError = request.getParameter("isError");
 	//out.print(isError);
 
