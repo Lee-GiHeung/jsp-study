@@ -55,21 +55,21 @@ public class LoginController extends HttpServlet {
 			session.setAttribute("MemberDto", dto);
 			
 			// 개시글 조회 후 request에 담아줌
-			BoardDao boardDao = new BoardDao();
-			request.setAttribute("list", boardDao.getList());
-			dao.close();
+//			BoardDao boardDao = new BoardDao();
+//			request.setAttribute("list", boardDao.getList());
+//			dao.close();
 			
 			// sendRedirect를 이용할 경우, request 영역이 공유가 되지 않기 때문에
 			// list 값을 화면으로 전할 수 없음
-			request.getRequestDispatcher("board.jsp").forward(request, response);
-			
+//			request.getRequestDispatcher("board.jsp").forward(request, response);
+			response.sendRedirect("/boardList");
+					
 		} else {
 			// 로그인 실패
 			response.sendRedirect("loginForm.jsp?isError=1");	
 			
 		}
-			
-		
+					
 	}
 
 }

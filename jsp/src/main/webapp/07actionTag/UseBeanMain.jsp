@@ -37,9 +37,16 @@
 --%>
  
 <%-- 객체생성 --%> 
+<%
+	BoardDto bDto = new BoardDto();
+	bDto.setContent("내용");
+	bDto.setTitle("제목");
+	request.setAttribute("bDto",bDto);
+%>
 <jsp:useBean id="boardDto"
 				class="com.momo.dto.BoardDto"
-				scope="request"></jsp:useBean>
+				scope="request">
+</jsp:useBean>
 
 <%-- setProperty 메서드를 이용해서 속성값을 지정 --%> 
 <%-- 

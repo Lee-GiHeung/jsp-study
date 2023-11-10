@@ -12,6 +12,94 @@ import com.momo.dto.BoardDto;
 // main 메서드 사용이 불가능, 서버가 실행되어야 사용이 가능
 // 만약, main 메서드를 이용해서 테스트를 하고 싶다면 상속받는 객체를 DBConnection으로 변경해야 함
 public class BoardDao extends DBConnPool{
+//	public int insertBoard(BoardDto dto) {
+//		
+//	}
+	
+	public int deleteBoard(String num) {
+		int res = 0;
+		String sql = "delete\r\n"
+				+ "from board\r\n"
+				+ "where num = ?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, num);
+			
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return res;
+		
+	}
+	
+	
+	/**
+	 * 게시글의 조회수를 1증가 시켜 줌
+	 * insert, update, delete의 반환타입은 int(몇건이 처리 되었는지 반환)
+	 * 반환타입은 int로 설정
+	 * 
+	 */
+	public int visitcountUp(String num) {
+		int res = 0;
+		String sql = "update board\r\n"
+				+ "set visitcount = visitcount + 1\r\n"
+				+ "where num = ?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, num);
+			
+			res = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+								
+			e.printStackTrace();
+		}
+		return res;			
+		
+		
+	}
+	
+	
+	
+	/**
+	 * 한 건의 게시글을 조회 후 반환
+	 */
+	public BoardDto getOne(String num) {
+		BoardDto dto = null;
+		String sql = "select * \r\n"
+				+ "from board\r\n"
+				+ "where num = ?";
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new BoardDto();
+				dto.setContent(rs.getString("content"));
+				dto.setId(rs.getString("id"));
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setPostdate(rs.getString("postdate"));
+				dto.setVisitcount(rs.getString("visitcount"));
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return dto;		
+	}
+	
+	/**
+	 * 게시글 목록을 반환
+	 * List<BoardDto>
+	 * */
 	
 	public List<BoardDto> getList() {
 		List<BoardDto> list = new ArrayList<>();
