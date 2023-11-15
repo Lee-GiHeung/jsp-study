@@ -1,3 +1,4 @@
+<%@page import="com.momo.dto.Criteria"%>
 <%@page import="com.momo.dto.BoardDto"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -9,9 +10,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-<%=request.getAttribute("list") %>
-
 <script type="text/javascript">
 // 화면에서 동적인 처리
 window.onload = function() {
@@ -85,7 +83,7 @@ window.onload = function() {
 </form>
 
 <h2>게시글 목록</h2>
-<%=request.getAttribute("list") %>
+
 <table border="1">
 	<tr>
 		<th>일련번호</th>
@@ -114,6 +112,59 @@ window.onload = function() {
 	} 
 	%>
 </table>
+
+<!-- 페이지 네비게이션 작성 
+	- 페이지 번호
+	- 페이지 블럭당 페이지 수 
+		페이지블럭의 시작번호 ~ 페이지블럭의 끝번호
+		
+	- 총 게시물의 수 totalCnt
+	- 페이지당 게시물의 수 amount
+		진짜 블럭의 끝번호
+				
+-->
+
+<%
+	out.print("<br>==============페이지 블럭 시작===============");
+	int startNo = 0;
+	int endNo = 0;
+	
+	// 연산을 위해서 (올림처리를 위해) double타입으로 선언 
+	// java에서 int/int = int
+	double pagePerBlock = 10.0;
+
+	Criteria cri = new Criteria();
+	int totalCnt = 0;
+	if(request.getAttribute("cri") != null
+			&& !"".equals(request.getAttribute("cri"))) {
+		cri = (Criteria)request.getAttribute("cri");		
+		out.print("<br>요청 페이지 번호 - pageNo : " + cri.getPageNo());
+		out.print("<br>페이지당 게시물수 - amount : " + cri.getAmount());
+	}	
+	if(request.getAttribute("totalCnt") != null
+			&& !"".equals(request.getAttribute("totalCnt"))) {
+		totalCnt = Integer.parseInt(request.getAttribute("totalCnt").toString());		
+		out.print("<br>총 게시물의 수 - totalCnt : " + totalCnt);
+	
+	}
+	
+	// 페이지 블럭의 시작 번호와 끝 번호 구하기
+	// 끝 번호 구하기
+	// 7페이지 요청 : 올림(7/10.0) * 10
+	// 11페이지 요청 : 올림(11/10.0) * 10
+	endNo = (int)(Math.ceil( cri.getPageNo() / pagePerBlock ) * pagePerBlock);
+	startNo = endNo - ((int)pagePerBlock - 1);
+	out.print("<br>");
+	
+	// 페이지 블럭을 생성
+	for(int i=startNo; i<endNo; i++) {
+		out.print("<a href='/boardList?pageNo="+i+"'>" + i + "</a> ");
+		
+	}
+	
+%>
+
+
 
 </body>
 </html>

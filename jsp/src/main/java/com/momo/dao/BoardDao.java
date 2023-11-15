@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.momo.common.DBConnPool;
 import com.momo.dto.BoardDto;
+import com.momo.dto.Criteria;
 
 // DBConnPool 
 // : 톰캣에서 제공해주는 기능을 사용하여 커넥션풀이라는 공간에 커넥션 객체를 미리 생성하고 사용
@@ -101,11 +102,27 @@ public class BoardDao extends DBConnPool{
 	 * List<BoardDto>
 	 * */
 	
-	public List<BoardDto> getList() {
+	public List<BoardDto> getList(Criteria cri) {
 		List<BoardDto> list = new ArrayList<>();
 		
+		String sql = "select *\r\n"
+				+ "from (\r\n"
+				+ "        select rownum rnum, b.*\r\n"
+				+ "        from (\r\n"
+				+ "                select *\r\n"
+				+ "                from board\r\n"
+				+ "                order by num desc\r\n"
+				+ "        )b\r\n"
+				+ "    )\r\n"
+				+ "where rnum between ? and ?";
+		
 		try {
-			pstmt = con.prepareStatement("select * from board");
+			//pstmt = con.prepareStatement("select * from board");
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, cri.getStartNum());
+			pstmt.setInt(2, cri.getEndNum());
+			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -129,8 +146,37 @@ public class BoardDao extends DBConnPool{
 			e.printStackTrace();
 		}
 		
-		return list;
+		return list;		
+	}
+	
+	/**
+	 * 게시글의 총 건수를 조회후 반환
+	 * - 집계함수를 이용하여 게시글의 총 건수를 구하자
+	 * @return 게시글의 총 건수
+	 */
+	public int getTotalCnt() {
+		int res = 0;
+		String sql = "select count(*) from board";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				res = rs.getInt(1);
+				
+				
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("SQLException 예외 발생");
+			e.printStackTrace();
+		}
+		
+		
+		return res;
 		
 	}
-		
+	
+	
 }
