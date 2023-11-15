@@ -157,7 +157,7 @@ window.onload = function() {
 	out.print("<br>");
 	
 	// 페이지 블럭을 생성
-	for(int i=startNo; i<endNo; i++) {
+	for(int i=startNo; i<=endNo; i++) {
 		out.print("<a href='/boardList?pageNo="+i+"'>" + i + "</a> ");
 		
 	}
