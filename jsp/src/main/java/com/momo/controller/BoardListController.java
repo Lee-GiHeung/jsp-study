@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.momo.dao.BoardDao;
 import com.momo.dto.Criteria;
+import com.momo.dto.PageDto;
 
 @WebServlet("/boardList")
 public class BoardListController extends HttpServlet {
@@ -25,11 +26,12 @@ public class BoardListController extends HttpServlet {
 		request.setAttribute("list", dao.getList(cri));
 		
 		// 페이지 블럭을 생성하기 위해 필요한 정보를 저장
-		// cri : 요청 페이지 번호, 페이지당 게시물 수
-		request.setAttribute("cri", cri);
-		// totalCnt : 총 게시물의 수
-		request.setAttribute("totalCnt", dao.getTotalCnt());
-
+		int totalCnt = dao.getTotalCnt();
+		PageDto pageDto = new PageDto(totalCnt, cri);
+		request.setAttribute("pageDto", pageDto);
+		
+		dao.close();
+		
 		// servlet으로 jsp를 보여주고 싶으면 forward
 		// 페이지 전환 
 		//forward 방식으로 전환하므로 request 영역이 공유됨
