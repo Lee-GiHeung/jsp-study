@@ -3,6 +3,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,66 +55,44 @@ window.onload = function() {
 	
  -->
 <form method="get" name="loginForm">
-<%
-	// getAttribute의 반환 타입은 Object이므로 형변환이 필요	
-	// nullpointException을 방지하기 위해서 null 체크를 진행
+	<c:if test="${empty userId }">
+		<button id="loginBtn" class="btn btn-primary">로그인</button>
+	</c:if>
 	
-	// 로그인 버튼이 나오려면 - 
-	// 세션이 저장이 안되어 있는 상태(로그아웃 상태)에서 로그인 버튼이 나옴 
-	
-	// 로그아웃 버튼이 나오려면
-	// 세션이 저장된 상태(로그인 상태)에서 로그아웃 버튼이 나옴
-	
-	if(session.getAttribute("userId") != null
-		&& !"".equals(session.getAttribute("userId").toString())) {
-		// 로그인한 사용자 - 로그아웃버튼 출력 -> 세션을 만료 시키고 로그인 페이지로 이동
-%>
-	<%=session.getAttribute("userId") %>님 환영합니다.
-	<button id="logoutBtn" class="btn btn-danger">로그아웃</button>
-<% 	
-	} else {
-		// 로그인하지 않은 사용자 - 로그인버튼 출력 -> 로그인 페이지로 이동		
-
-%>
-	<button id="loginBtn" class="btn btn-primary">로그인</button>
-
-<% 		
-	}
-
-%>
+	<c:if test="${not empty userId }">
+		${userId }님 환영합니다.
+		<button id="logoutBtn" class="btn btn-danger">로그아웃</button>
+	</c:if>
 </form>
 
-<h2>게시글 목록</h2>
-
-<table class="table">
+<h2>게시글 목록</h2> 	
+<table class="table" border="1">
   <thead>
     <tr>
-      <th scope="col">일련번호</th>
-      <th scope="col">내용</th>
-      <th scope="col">작성자</th>
-      <th scope="col">작성일</th>
-      <th scope="col">조회수</th>
+	    <th scope="col">일련번호</th>
+	    <th scope="col">내용</th>
+	    <th scope="col">작성자</th>
+	    <th scope="col">작성일</th>
+	    <th scope="col">조회수</th>
     </tr>
   </thead>
   <tbody>
-	<%	
-	if(request.getAttribute("list") != null){
-		List<BoardDto> list = (List<BoardDto>)request.getAttribute("list"); 
-		for(BoardDto dto :list){
-	%>
-			
+		<!-- 만약 리스트의 사이즈가 0이라면 조회된 데이터가 없습니다. 출력 -->
+		<!-- 만약 리스트의 사이즈가 0이 아니라면 목록을 출력 -->
+		<c:if test="${empty list }" var="result">
+			<tr><td colspan="6">조회된 데이터가 존재하지 않습니다</td></tr>
+		</c:if>
+		
+		<c:forEach items="${list }" var="dto">
 			<tr>
-				<td scope="row"><%= dto.getNum()%></td>
-				<td><a href="/boardRead?num=<%=dto.getNum()%>"><%= dto.getTitle()%></a></td>
-				<td><%= dto.getContent()%></td>
-				<td><%= dto.getId()%></td>
-				<td><%= dto.getPostdate()%></td>
-				<td><%= dto.getVisitcount()%></td>
-	
+				<td>${dto.num }</td>
+				<td><a href="/boardRead?num=${dto.num}">${dto.title }</a></td>
+				<td>${dto.content }</td>
+				<td>${dto.id }</td>
+				<td>${dto.postdate }</td>
+				<td>${dto.visitcount }</td>
 			</tr>
-	<%	}
-	} 
-	%>
+		</c:forEach>
 	 </tbody>
 </table>
 
