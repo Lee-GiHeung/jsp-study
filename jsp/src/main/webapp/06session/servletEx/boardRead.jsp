@@ -9,11 +9,20 @@
 <title>Insert title here</title>
 </head>
 <body>
+<form action="/boardList" name="searchForm">
+<br>num : <input type="text" name="num" value="${param.num }">
+<br>pageNo : <input type="text" name="pageNo" value="${param.pageNo }">
+<br>searchWord : <input type="text" name="searchWord" value="${param.searchWord }">
+<br>searchField : <input type="text" name="searchField" value="${param.searchField }">
+</form>
+
 <script type="text/javascript">
 window.onload = function() {
 	// 버튼 클릭하면 리스트 페이지로 이동
 	listBtn.onclick = function() {
-		location.href = '/boardList';				
+		//location.href = '/boardList';		
+		searchForm.submit();
+		
 	}
 	// editBtn.addEventListener('click', function() {
 	deleteBtn.addEventListener('click', ()=> {
@@ -21,7 +30,7 @@ window.onload = function() {
 		// 같은 경로에 들어 있기 때문에
 		// 서블릿을 통해 들어오는 경우, 경로문제가 발생할 수 있음
 		// 그래서 루트경로부터 풀 경로를 적어주는것이 오류가 발생하지 않도록 하는 방법
-		location.href = '/06session/servletEx/deleteProcess.jsp?num=<%=request.getParameter("num")%>';
+		location.href = '/06session/servletEx/deleteProcess.jsp?num=${param.num }';
 	});
 		
 	

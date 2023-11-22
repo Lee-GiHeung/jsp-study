@@ -8,6 +8,11 @@ public class BoardDto {
 	private String postdate;
 	private String visitcount;
 	
+	// 기본 생성자 추가
+	public BoardDto() {
+		
+	}
+	
 	public BoardDto(String num, String title, String content, String id, String postdate, String visitcount) {
 		super();
 		this.num = num;
