@@ -20,12 +20,14 @@
 		<td>순번</td>
 		<td>제목</td>
 		<td>저자</td>
+		<td>대여여부</td>
 	</tr>
 	<c:forEach items="${list }" var="dto">
 		<tr>
 			<td>${dto.no }</td>
 			<td>${dto.title }</td>
 			<td>${dto.author }</td>		
+			<td>${dto.rentYn }</td>		
 		</tr>	
 	</c:forEach>
 </table>

@@ -11,28 +11,27 @@ import com.momo.common.DBConnection;
 import com.momo.dto.EmpDto;
 
 /**
- * 데이터 베이스에 접근해서
+ * 데이터 베이스에 접근 해서 
  * 데이터 입력, 출력, 삭제, 조회 작업을 처리하는 객체
  * 
- * Dao -> mapper 
+ * Dao -> mapper
  * 
  */
-public class EmpDao extends DBConnPool {
-	
+public class EmpDao extends DBConnPool{
+
 	/**
-	 * 생성자를 이용하여 Connection 객체를 생성 후
-	 * 멤버변수인 con에 저장 합니다
-	 * 
+	 * 생성자를 이용하여 Connection 객체를 생성후
+	 * 멤버변수인 con에 저장 합니다.
+	 * @param application
 	 */
 //	public EmpDao(ServletContext application) {
-//		super(application);		
+//		super(application);
 //	}
 	
 	/**
-	 * 데이터베이스로부터 사원의 목록을 조회 하여 반환
-	 * 조회된 데이터를 반환하기 위해서 list에 담아둠			
-	 * 
-	 */	
+	 * 데이터베이스로부터 사원의 목록을 조회 하여 반환합니다.
+	 * 조회된 데이터를 반환하기 위해서 리스트에 담아줍니다.
+	 */
 	public List<EmpDto> getList() {
 		List<EmpDto> list = new ArrayList<>();
 		
@@ -41,13 +40,16 @@ public class EmpDao extends DBConnPool {
 			String sql = "select * from employee";
 			
 			rs = stmt.executeQuery(sql);
-			 
-			while(rs.next()) {
+			
+			while (rs.next()) {
+				// System.out.println();
+				// 콘솔에 출력 하던 데이터를 
+				// 화면에 출력 하기 위해서 리스트에 저장후 반환 합니다. 
 				EmpDto dto = new EmpDto();
 				dto.setEmp_id(rs.getString(1));
 				dto.setEmp_name(rs.getString(2));
-				dto.setEmp_no(rs.getString(3));				
-			
+				dto.setEmp_no(rs.getString(3));
+				
 				list.add(dto);
 			}
 			
@@ -58,8 +60,8 @@ public class EmpDao extends DBConnPool {
 			System.out.println("SQLException 예외사항 발생");
 			e.printStackTrace();
 		}
-		return list;
 		
+		return list;
 	}
 	
 	public static void main(String[] args) {
@@ -67,3 +69,12 @@ public class EmpDao extends DBConnPool {
 		//empDao.getList();
 	}
 }
+
+
+
+
+
+
+
+
+

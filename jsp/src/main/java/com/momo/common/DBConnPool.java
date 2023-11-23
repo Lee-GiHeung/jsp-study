@@ -53,5 +53,22 @@ public class DBConnPool {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * 페이지쿼리를 생성해주는 메서드
+	 * @param sql
+	 * @return
+	 */
+	public String pageingQuery(String sql) {
+		
+		String before = "select * \r\n"
+					+ "from(select b.*, rownum rnum\r\n"
+					+ "     from(";
+		
+		String after = ") b)\r\n"
+					+ "where rnum between ? and ?";
+		
+		return before + sql + after;
+		
+	}
 	
 }
