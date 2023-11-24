@@ -26,8 +26,11 @@ public class BookList1Controller extends HttpServlet {
 		Criteria cri = new Criteria(
 						request.getParameter("pageNo") // 요청 페이지 번호 기본값 (기본값 : 1)
 						, request.getParameter("amount") // 페이지당 보여줄 게시물의 수 (기본값 : 10)
-					);
-			
+						, request.getParameter("searchField")
+						, request.getParameter("searchWord")				
+				);
+			System.out.println(cri);
+		
 		// 도서목록 조회후 request영역에 담아줌 -> 화면에 출력하기 위해서
 		BookDao dao = new BookDao();
 		
@@ -35,7 +38,7 @@ public class BookList1Controller extends HttpServlet {
 		request.setAttribute("list", list);
 		
 		// 페이지 블럭을 생성하기 위한 객체
-		PageDto pageDto = new PageDto(dao.getTotalCnt(), cri);
+		PageDto pageDto = new PageDto(dao.getTotalCnt(cri), cri);
 		
 		request.setAttribute("list", list);
 		request.setAttribute("pageDto", pageDto);
