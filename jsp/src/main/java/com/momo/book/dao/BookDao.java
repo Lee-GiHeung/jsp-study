@@ -13,7 +13,6 @@ import com.momo.lib.dto.BookDto;
  * 
  */
 public class BookDao extends DBConnPool{
-	
 	/**
 	 * 도서목록을 조회 후 반환 합니다.
 	 * @return 도서목록
@@ -21,10 +20,11 @@ public class BookDao extends DBConnPool{
 	public List<BookDto> getList(Criteria cri){
 		List<BookDto> list = new ArrayList<>();
 		
-		String where = "";
+		String where = "";			
 		if(!"".equals(cri.getSearchField())
 				&& !"".equals(cri.getSearchWord())) {
-			where = "where " + cri.getSearchField()			
+			
+			where = " where " + cri.getSearchField()			
 						+ " like '%" + cri.getSearchWord() + "%'";
 		}
 		
@@ -33,8 +33,7 @@ public class BookDao extends DBConnPool{
 					+ "        -- 최신게시물을 먼저 조회 하기 위해서 정렬 합니다\r\n"
 					+ where
 					+ "        order by no desc";
-		
-		
+				
 		try {
 			// pageingQuery를 이용시 페이지 처리를 위한 파라메터 세팅을 해주어야 합니다!!!
 			sql = pageingQuery(sql);
@@ -110,8 +109,7 @@ public class BookDao extends DBConnPool{
 						+ " like '%" + cri.getSearchWord() + "%'";
 		}
 		
-		String sql = "select count(*) from book " + where;
-		
+		String sql = "select count(*) from book " + where;		
 		try {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -126,7 +124,32 @@ public class BookDao extends DBConnPool{
 		
 		return res;
 	}
-	
+	/**
+	 * 도서 등록
+	 * @param dto
+	 * @return
+	 */
+	public int regBook(BookDto dto) {		
+		String sql = "insert into book (no, title, rentyn, author) \r\n"
+					+ " values (seq_book_no.nextval, ?, 'N', ?)"; 		
+		int res = 0;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getAuthor());
+			
+			// insert, delete, update의 반환 : rs = pstmt.executeQuery()
+			// 타입은 몇건이 처리되었는지 결과
+			res = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+		
 }
 
 
