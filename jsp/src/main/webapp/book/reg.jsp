@@ -38,8 +38,13 @@
 	    </div>      
 	    <div class="card-body">
 			<!-- 등록 폼 -->
-			<form action="/book/bookRegProcess" name="regForm" method="post">
-			
+			<!-- 
+				파일 업로드를 위해 컨트롤러 변경
+				enctype 속성지정 
+			-->
+			<form action="/book/bookRegUploadProcess" 
+					enctype="multipart/form-data" 
+					name="regForm" method="post">		
 				<!-- 서버에 값을 넘길 요소 -->
 				<div class="input-group mb-3">
 				  <span class="w-20 input-group-text" id="basic-addon1">도서명</span>

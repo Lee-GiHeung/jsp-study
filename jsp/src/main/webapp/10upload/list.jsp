@@ -35,5 +35,15 @@ list : ${list }
 		</tr>
 	</c:forEach>
 </table>
+
+<!-- 
+	ofile : 원본 파일명
+	sfile : 지정된 파일명
+ -->
+
+<a href="fileDownload.jsp?ofile=배열문제.txt&sfile=배열문제.txt">
+	배열문제
+</a>
+
 </body>
 </html>
